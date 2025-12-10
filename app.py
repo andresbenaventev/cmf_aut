@@ -51,7 +51,16 @@ if archivo and valor_dolar:
             "moneda", "cuenta", "monto", "taxonomia", "origen"
         ],
         dtype=str
-)
+    )
+    def fix_encoding(text):
+    try:
+        return text.encode("latin1").decode("utf-8")
+    except:
+        return text
+
+    # Arreglar todas las columnas de texto
+    for col in df.select_dtypes(include="object").columns:
+        df[col] = df[col].apply(fix_encoding)
 
     df["monto"] = pd.to_numeric(df["monto"], errors="coerce")
 
