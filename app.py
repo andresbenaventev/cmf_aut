@@ -44,13 +44,15 @@ if archivo and valor_dolar:
     df = pd.read_csv(
         io.StringIO(contenido),
         sep=";",
+        encoding="latin-1",   # Aunque ya decodificaste, puede ayudar a pandas
         header=None,
         names=[
             "periodo", "codigo_entidad", "nombre_entidad", "tipo",
             "moneda", "cuenta", "monto", "taxonomia", "origen"
         ],
         dtype=str
-    )
+)
+
     df["monto"] = pd.to_numeric(df["monto"], errors="coerce")
 
     # Convertir CLP a USD
