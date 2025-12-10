@@ -45,6 +45,13 @@ archivo = st.file_uploader("📂 Subir archivo .txt del informe IFRS", type=["tx
 # Ingresar valor del dólar
 valor_dolar = st.number_input("💵 Valor del dólar (CLP por USD)", min_value=100.0, max_value=2000.0, step=1.0)
 
+def formato_contable(valor):
+    try:
+        return f"${valor:,.0f}"
+    except:
+        return valor
+
+
 if archivo and valor_dolar:
     # Leer archivo con codificación latinoamericana
     contenido = archivo.read().decode("utf-8", errors="replace")
