@@ -11,6 +11,8 @@ import math
 import pandas as pd
 import streamlit as st
 import io
+from io import BytesIO
+
 
 CUENTAS_OBJETIVO = [
     "Ingresos de actividades ordinarias",
