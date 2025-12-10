@@ -47,7 +47,7 @@ valor_dolar = st.number_input("💵 Valor del dólar (CLP por USD)", min_value=1
 
 if archivo and valor_dolar:
     # Leer archivo con codificación latinoamericana
-    contenido = archivo.read().decode("latin-1", errors="replace")
+    contenido = archivo.read().decode("utf-8", errors="replace")
     df = pd.read_csv(
         io.StringIO(contenido),
         sep=";",
