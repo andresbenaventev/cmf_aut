@@ -40,7 +40,7 @@ archivo = st.file_uploader("📂 Subir archivo .txt del informe IFRS", type=["tx
 valor_dolar = st.number_input("💵 Valor del dólar (CLP por USD)", min_value=100.0, max_value=2000.0, step=1.0)
 
 if archivo and valor_dolar:
-    contenido = archivo.read().decode("latin-1", errors="ignore")
+    contenido = archivo.read().decode("latin-1", errors="replace")
     df = pd.read_csv(
         io.StringIO(contenido),
         sep=";",
