@@ -101,9 +101,32 @@ if archivo and valor_dolar:
 
     # Guardar a Excel en memoria
     output = BytesIO()
+    
     with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
         resultado.to_excel(writer, index=False, sheet_name="Empresas")
+    
+        workbook  = writer.book
+        worksheet = writer.sheets["Empresas"]
+    
+        # Formato contable
+        formato_contable = workbook.add_format({
+            'num_format': '_($* #,##0_);_($* (#,##0);_($* "-"??_);_(@_)',
+            'align': 'right'
+        })
+    
+        # Detectar columnas numéricas a formatear
+        columnas_a_formatear = ["ingresos_usd", "deudores_usd", "max_usd"]
+        for idx, col in enumerate(resultado.columns):
+            # Ajustar ancho
+            max_len = max(resultado[col].astype(str).map(len).max(), len(col)) + 2
+            worksheet.set_column(idx, idx, max_len)
+    
+            # Si es columna numérica, aplicar formato contable
+            if col in columnas_a_formatear:
+                worksheet.set_column(idx, idx, max_len, formato_contable)
+    
     output.seek(0)
+
 
     # Botón de descarga
     st.download_button(
