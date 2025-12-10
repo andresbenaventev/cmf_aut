@@ -97,7 +97,16 @@ if archivo and valor_dolar:
 
     # Mostrar resultados
     st.success(f"✅ Se encontraron {len(resultado)} empresas sobre {UMBRAL_USD:,} USD.")
-    st.dataframe(resultado)
+    # Clonar para no modificar el original
+    preview = resultado.copy()
+    
+    # Aplicar formato contable a columnas numéricas
+    for col in ["ingresos_usd", "deudores_usd", "max_usd"]:
+        if col in preview.columns:
+            preview[col] = preview[col].apply(formato_contable)
+    
+    st.dataframe(preview)
+
 
     # Guardar a Excel en memoria
     output = BytesIO()
