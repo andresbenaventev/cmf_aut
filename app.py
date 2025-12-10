@@ -85,11 +85,17 @@ if archivo and valor_dolar:
     st.success(f"✅ Se encontraron {len(resultado)} empresas sobre {UMBRAL_USD:,} USD.")
     st.dataframe(resultado)
 
-    # Descargar CSV
-    csv = resultado.to_csv(index=False, encoding="utf-8-sig")
+    # Generar archivo Excel en memoria
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        resultado.to_excel(writer, index=False, sheet_name='Empresas')
+        writer.save()
+        procesado = output.getvalue()
+
+    # Botón de descarga
     st.download_button(
-        label="💾 Descargar resultado en CSV",
-        data=csv,
-        file_name="empresas_grandes_ifrs.csv",
-        mime="text/csv"
+        label="💾 Descargar resultado en Excel",
+        data=procesado,
+        file_name="empresas_grandes_ifrs.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
